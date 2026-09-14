@@ -139,7 +139,7 @@ export default function Home() {
           <aside className="operationsRail">
             <div className="railCard spotlight">
               <p className="eyebrow">NEXT BEST ACTION</p>
-              <h3>{completed ? 'Maya&apos;s claim is verified' : hasPlan && hasPolicy ? 'Approve Maya&apos;s execution' : 'Review Maya&apos;s claim'}</h3>
+              <h3>{completed ? "Maya's claim is verified" : hasPlan && hasPolicy ? "Approve Maya's execution" : "Review Maya's claim"}</h3>
               <p>{completed ? 'The receipt, amount and submitted portal state all matched the intended reimbursement outcome.' : hasPlan && hasPolicy ? 'Evidence and policy are resolved. One human approval unlocks the external ExpenseHub execution.' : 'ContextFlow found a ₹180 mismatch between the hotel invoice and verified payment. Policy can resolve it automatically.'}</p>
               <Link className="primaryLink" href={completed ? '/mission-control' : '/claims/CF-1842'}>{completed ? 'View proof →' : 'Open claim →'}</Link>
             </div>
