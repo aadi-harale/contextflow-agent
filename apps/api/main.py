@@ -11,10 +11,11 @@ from typing import Any, Dict, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 from pydantic import BaseModel
 from strands import Agent, tool
 
-app = FastAPI(title="ContextFlow Agent API", version="0.3.0")
+app = FastAPI(title="ContextFlow Agent API", version="0.4.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "https://contextflow-agent.vercel.app"],
@@ -172,8 +173,9 @@ def health() -> dict:
     return {
         "ok": True,
         "service": "contextflow-api",
-        "version": "0.3.0",
+        "version": "0.4.0",
         "strands_model": os.getenv("STRANDS_MODEL_ID", "global.anthropic.claude-sonnet-4-6"),
+        "aws_region": os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "not-set")),
     }
 
 
@@ -211,3 +213,7 @@ def authorization_check(req: AuthorizationRequest) -> dict:
 @app.post("/verification/check")
 def verification_check(req: VerifyRequest) -> dict:
     return receipt_verification(req.claim_id, req.receipt_id, req.observed_amount, req.observed_status)
+
+
+# AWS Lambda entrypoint. This does not change local uvicorn behavior.
+lambda_handler = Mangum(app, lifespan="off")
