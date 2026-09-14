@@ -46,3 +46,5 @@ jobs:
         run: python -m compileall -q .
       - name: Run deterministic tests
         run: pytest -q test_main.py
+      - name: Build AWS Lambda container
+        run: docker build -f Dockerfile.lambda -t contextflow-agent-api:ci .
