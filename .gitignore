@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.env
+.env.local
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.vercel/
+coverage/
+test-results/
