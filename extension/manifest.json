@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "ContextFlow Privacy Kernel",
+  "version": "0.2.0",
+  "description": "Local semantic perception, secret vault, and purpose-bound execution for ContextFlow demo portals.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["http://localhost:3000/*", "https://*.vercel.app/*"],
+  "background": {"service_worker": "background.js"},
+  "content_scripts": [
+    {
+      "matches": ["http://localhost:3000/portal/*", "https://*.vercel.app/portal/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {"default_title": "ContextFlow"}
+}
