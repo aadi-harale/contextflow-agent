@@ -6,6 +6,53 @@
 
 ContextFlow is built for the **Professional Agents** track of the AWS Agents for Humans hackathon. It handles a repetitive, judgment-heavy reimbursement workflow end to end: reading evidence, reconciling conflicts, enforcing policy, planning browser actions with Strands Agents, releasing protected values only through a local deterministic Privacy Kernel, submitting to a demo reimbursement portal, and independently verifying the resulting receipt.
 
+**Live product:** https://contextflow-agent.vercel.app
+
+## Product workflow
+
+The hackathon experience is deliberately designed as one clear professional workflow rather than a collection of disconnected AI features:
+
+```text
+Claims queue
+   ↓
+Maya Patel · CF-1842
+   ↓
+Evidence ingestion + SHA-256 fingerprints
+   ↓
+Cross-document conflict detection
+₹8,420 hotel invoice ≠ ₹8,240 verified payment
+   ↓
+Deterministic policy rule HOTEL_001
+eligible total = ₹26,990
+   ↓
+Strands produces a sanitized browser plan
+   ↓
+One human approval to execute externally
+   ↓
+ExpenseHub browser workflow
+   ↓
+Protected bank + IFSC values resolved locally
+   ↓
+Unauthorized disclosure request → BLOCKED
+   ↓
+Claim submitted
+   ↓
+Receipt TRV-2026-91827
+   ↓
+Independent verifier checks receipt + amount + state
+   ↓
+VERIFIED_COMPLETE
+   ↓
+Mission Control projects the full operational graph
+```
+
+The product UI follows that same narrative:
+
+1. **Claims** — a finance-operations inbox showing blockers, claim state and next-best action.
+2. **Claim Workspace** — source evidence, live agent run, policy decision, provenance and the execution gate.
+3. **ExpenseHub** — the synthetic external reimbursement portal where the Chrome extension performs constrained local execution.
+4. **Mission Control** — a post-run operational view that projects only runtime-emitted evidence, policy, privacy and verification events.
+
 ## Why this exists
 
 Reimbursement workflows are deceptively expensive. A finance or operations user has to interpret policy, reconcile invoices against proof of payment, chase missing evidence, re-enter data into browser portals, and handle sensitive bank information. Generic browser agents make this easier to automate, but they also create an authority problem: the same model that reads untrusted page content can often also decide what sensitive data to reveal.
@@ -61,12 +108,11 @@ A fuller diagram and authority model are in [`docs/architecture.md`](docs/archit
 
 ```text
 apps/
-  web/        Next.js product UI, Mission Control, and ExpenseHub demo portal
+  web/        Next.js claims product, Mission Control, and ExpenseHub demo portal
   api/        FastAPI + Strands Agents backend
 extension/    Chrome MV3 privacy kernel and local secret vault
 demo-data/    Synthetic claim and reimbursement policy
 docs/         Architecture and submission documentation
-tests/        Deterministic backend/security tests
 ```
 
 ## Run the web app
@@ -79,7 +125,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open `http://localhost:3000`, then follow **Claims → Maya Patel → Run ContextFlow**.
 
 ## Load the Privacy Kernel extension
 
@@ -87,10 +133,11 @@ Open `http://localhost:3000`.
 2. Enable **Developer mode**.
 3. Choose **Load unpacked**.
 4. Select this repository's `extension/` directory.
-5. Open `http://localhost:3000/portal/expensehub`.
-6. The page should show **PRIVACY KERNEL CONNECTED**.
+5. Open `http://localhost:3000/portal/expensehub` or the deployed ExpenseHub route.
+6. The ContextFlow execution sidecar should show the kernel as **LIVE**.
 7. Click **Authorize protected fields**. The raw bank account and IFSC are resolved only inside the extension and written directly into the approved fields.
-8. Click **Try verification** in the untrusted widget. The expected result is `BLOCKED` with `target_origin_not_authorized`.
+8. Click **Verify account** in the untrusted third-party widget. The expected result is a deterministic block because `verify-now.local` is not an approved target origin.
+9. Submit the claim and open Mission Control to see the independent verification result.
 
 If the extension is not loaded, the portal intentionally refuses to fake the security result.
 
@@ -121,6 +168,8 @@ curl -X POST http://localhost:8000/agent/run \
   -d '{"instruction":"Process claim CF-1842. Inspect evidence, evaluate policy, and describe the safe browser plan using secret references only."}'
 ```
 
+For a deployed frontend, set `CONTEXTFLOW_AGENT_API_URL` to the public backend origin. The UI intentionally keeps the final execution gate locked when a real Strands plan is unavailable.
+
 The Strands implementation uses `Agent` and custom `@tool` functions. The agent can inspect sanitized evidence, evaluate reimbursement policy, request narrowly scoped secret authorization, and verify completion; it never receives raw bank values.
 
 ## Security properties demonstrated
@@ -144,10 +193,11 @@ The Strands implementation uses `Agent` and custom `@tool` functions. The agent 
 - [x] MIT open-source license
 - [x] Architecture diagram
 - [x] Synthetic data only
-- [ ] Public live demo URL
+- [x] Public live frontend URL
+- [ ] Public deployed Strands backend connected to the frontend
 - [ ] Public ≤5 minute YouTube/Vimeo demo
 - [ ] AWS Builder ID added on Devpost submission
-- [ ] Final Devpost text description
+- [ ] Final Devpost submission text and links
 
 ## Hackathon eligibility / prior-work disclosure
 
