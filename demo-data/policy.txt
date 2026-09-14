@@ -1,0 +1,13 @@
+ContextFlow Demo Conference Reimbursement Policy
+
+1. Conference registration is reimbursable up to INR 25,000.
+2. The claimed amount must not exceed the amount actually paid.
+3. Payment proof is mandatory for every reimbursed expense.
+4. Hotel reimbursement requires a valid hotel invoice.
+5. Hotel reimbursement also requires travel proof such as a boarding pass.
+6. Evidence must be dated within 60 days of submission.
+7. Employee identity must match the claim owner.
+8. Bank details may be used only for reimbursement payment to the approved ExpenseHub portal.
+9. Protected bank details must not be disclosed to third-party verification destinations.
+10. Attachments must be PDF or supported image evidence.
+11. A claim is complete only when the portal returns a receipt and the submitted amount is independently verified.
