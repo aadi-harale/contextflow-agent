@@ -66,7 +66,7 @@ export default function Home() {
           <div className="progress"><i style={{ width: `${events.length ? (events.length / 12) * 100 : 0}%` }} /></div>
           <div className="metricgrid">
             <div><b>{state.policyRules || '—'}</b><small>policy rules</small></div>
-            <div><b>{events.length ? '17' : '—'}</b><small>evidence facts</small></div>
+            <div><b>{state.evidenceItems || '—'}</b><small>evidence facts</small></div>
             <div><b>{state.rawSecretsToModel}</b><small>raw secrets exposed</small></div>
           </div>
           {current && <div className="event"><span className="dot" /><div><b>{current.title}</b><p>{current.detail}</p></div></div>}
