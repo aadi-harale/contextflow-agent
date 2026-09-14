@@ -1,0 +1,16 @@
+{
+  "claim_id": "CF-1842",
+  "employee": "Maya Patel",
+  "employee_ref": "PERSON_1",
+  "claim_type": "conference_reimbursement",
+  "conference_fee": 18750,
+  "hotel_invoice": 8420,
+  "hotel_paid": 8240,
+  "requested_total": 27170,
+  "approved_total": 26990,
+  "currency": "INR",
+  "protected": {
+    "bank_account": "BANK_ACCOUNT_1",
+    "ifsc": "IFSC_1"
+  }
+}
